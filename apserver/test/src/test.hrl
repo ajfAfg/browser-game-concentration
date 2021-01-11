@@ -1,0 +1,1 @@
+-define(TEST_NAME, atom_to_list(?FUNCTION_NAME)).
