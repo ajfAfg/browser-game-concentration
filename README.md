@@ -8,7 +8,7 @@ This repository implements the card game
 ## Quick start
 
 First, you can build and start a web server.
-You need to enter your PC password at this time (This reason is described later).
+And you need to enter your PC password at this time (This reason is described later).
 
 ~~~bash
 cd webserver
@@ -22,7 +22,7 @@ cd apserver
 make all
 ~~~
 
-Finally, open [a site](http://localhost) in your browser, then let's play Concentration!
+Finally, open http://localhost in your browser, then let's play Concentration!
 
 ## Notes
 
