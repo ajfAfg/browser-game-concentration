@@ -4,8 +4,12 @@
 
 do(ModData) when ModData#mod.request_uri =:= "/room" andalso ModData#mod.method =:= "POST" ->
 	io:format("~p~n", [uri_string:dissect_query(ModData#mod.entity_body)]),
-	Deck = "spade,10\r\n" ++ "heart,2\r\n",
-	Head = [{code,200}, {content_type,"text/csv"}, {content_length,integer_to_list(length(Deck))}],
-	Body = [Deck],
+
+	%% wait matching here
+
+	Deck = misc:shuffle(deck:generate_deck() ),
+	CSV  = deck:convert_csv(Deck),
+	Head = [{code,200}, {content_type,"text/csv"}, {content_length,integer_to_list(length(CSV))}],
+	Body = [CSV],
 	NewData = [{response, {response,Head,Body}}],
 	{proceed, NewData}.

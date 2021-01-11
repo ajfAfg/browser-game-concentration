@@ -17,4 +17,5 @@ generate_deck() ->
 
 -spec convert_csv(Deck :: deck()) -> string().
 convert_csv(Deck) ->
-	"ok".
+	Trumps = [[trump:get_suit(Trump),trump:get_number(Trump)] || Trump <- Deck],
+	csv:list_to_csv(Trumps).
