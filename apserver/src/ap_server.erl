@@ -8,7 +8,7 @@ start() ->
 
 prop_list() ->
 	[{port, 8080},
-	 {server_name, "apserver"},
+	 {server_name, "ap_server"},
 	 {server_root, "."},
 	 {document_root, "."},
 	 {bind_address, "localhost"},
