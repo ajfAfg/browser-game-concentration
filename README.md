@@ -1,6 +1,7 @@
 # Browser game - Concentration
 
-This repository implements the card game Concentration as a browser game.
+This repository implements the card game
+[Concentration](https://en.wikipedia.org/wiki/Concentration_(card_game)) as a browser game.
 
 ## Quick start
 
