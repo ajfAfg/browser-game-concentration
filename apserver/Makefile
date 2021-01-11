@@ -1,16 +1,16 @@
-EBIN := ebin
+include ../Makefile
+
+EBIN := ${shell mkdir -p ebin ; echo ebin}
 ERLCFLAGS := -W -o $(EBIN)
 ERLC := erlc $(ERLCFLAGS)
 
-SRCPATH := ebin
-ERLFLAGS := -noshell -run ap_server start -pa $(SRCPATH)
+EBINPATH := $(EBIN)
+ERLFLAGS := -noshell -run ap_server start -pa $(EBINPATH)
 ERL := erl $(ERLFLAGS)
 
 MODS := ${shell find src -name '*.erl' | sed 's/.erl//'}
 
-include ../Makefile
-
-%.beam:%.erl
+%.beam: %.erl
 	$(ERLC) $<
 
 .PHONY: all start stop compile clean

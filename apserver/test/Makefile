@@ -1,11 +1,11 @@
-EUNIT := /usr/local/Cellar/erlang/23.1.3/lib/erlang/lib/eunit-2.6/ebin
+EUNIT := ${shell find /usr/local/Cellar/erlang/ -type d -name ebin | grep eunit}
 INCLUDE := ../
-EBIN := ebin
+EBIN := ${shell mkdir -p ebin ; echo ebin}
 ERLCFLAGS := -W -pa $(EUNIT) -I $(INCLUDE) -o $(EBIN)
 ERLC := erlc $(ERLCFLAGS)
 
-SRCPATH := ../ebin ebin
-ERLFLAGS := -pa $(SRCPATH) -noshell
+EBINPATH := ../ebin $(EBIN)
+ERLFLAGS := -pa $(EBINPATH) -noshell
 ifeq ($(VERBOSE), true)
 	ERLFLAGS += -eval "eunit:test({}, [verbose])" -s init stop
 else
