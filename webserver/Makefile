@@ -8,11 +8,11 @@ MODS := ${shell find . -name '*.erl' | sed 's/.erl//'}
 
 .PHONEY: all start stop compile clean
 
-# execute commands all and start under root user
+# The commands all and start need to execute under root user
 all: compile start
 
 start:
-	cd ../game && erl -noshell -run web_server start -pa ../webserver/ &
+	cd ../game && sudo bash -c 'erl -noshell -run web_server start -pa ../webserver/ &'
 
 stop:
 	ps aux | grep erlang | grep web_server | grep -v grep | awk '{ print "kill -9", $$2 }' | sudo sh
