@@ -3,6 +3,8 @@
 This repository implements the card game
 [Concentration](https://en.wikipedia.org/wiki/Concentration_(card_game)) as a browser game.
 
+<span style="color: red;">THIS GAME IS NOT COMPLETED YET.</span>
+
 ## Quick start
 
 First, you can build and start a web server.
