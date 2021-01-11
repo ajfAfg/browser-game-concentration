@@ -1,11 +1,13 @@
 include ../Makefile
 
+DOMAIN := localhost
+
 EBIN := ${shell mkdir -p ebin ; echo ebin}
 ERLCFLAGS := -W -o $(EBIN)
 ERLC := erlc $(ERLCFLAGS)
 
 EBINPATH := $(EBIN)
-ERLFLAGS := -noshell -run ap_server start -pa $(EBINPATH)
+ERLFLAGS := -noshell -run ap_server start $(DOMAIN) -pa $(EBINPATH)
 ERL := erl $(ERLFLAGS)
 
 MODS := ${shell find src -name '*.erl' | sed 's/.erl//'}
