@@ -7,7 +7,12 @@ ERLCFLAGS := -W -o $(EBIN)
 ERLC := erlc $(ERLCFLAGS)
 
 EBINPATH := $(EBIN)
-ERLFLAGS := -noshell -run ap_server start $(DOMAIN) -pa $(EBINPATH)
+#ERLFLAGS := -noshell -run ap_server start $(DOMAIN) -pa $(EBINPATH)
+ERLFLAGS := -noshell
+ERLFLAGS += -run application load concentration
+ERLFLAGS += -run application start concentration
+ERLFLAGS += -run ap_server start $(DOMAIN)
+ERLFLAGS += -pa $(EBINPATH)
 ERL := erl $(ERLFLAGS)
 
 MODS := ${shell find src -name '*.erl' | sed 's/.erl//'}
