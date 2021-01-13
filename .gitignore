@@ -5,6 +5,8 @@
 erl_crash.dump
 .concrete/DEV_MODE
 .DS_STORE
+.log
+.log.?
 
 # rebar 2.x
 .rebar
