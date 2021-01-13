@@ -40,4 +40,4 @@ stop:
 compile: ${MODS:%=%.beam}
 
 clean:
-	rm -rf ebin/*.beam *.dump *.log *.log.?
+	rm -rf ebin/*.beam *.dump log/*
