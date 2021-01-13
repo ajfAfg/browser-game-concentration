@@ -1,2 +1,4 @@
-%-define(TIMEOUT, 60000).
--define(MATCHING_WAIT_TIME, 6000).
+%-define(MATCHING_WAIT_TIME, 60000).
+-define(MATCHING_WAIT_TIME, 1000).
+-define(PLAYER_NUM, 2).
+-define(MATCHING_ID_STRENGTH, 32).

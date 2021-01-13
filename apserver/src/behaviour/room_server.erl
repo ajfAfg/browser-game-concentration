@@ -4,19 +4,17 @@
 
 %% API
 -export([start_link/0]).
--export([match/1]).
+-export([wait_for_matching/1]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
 		 terminate/2, code_change/3, format_status/2]).
 
+-include_lib("src/behaviour/config.hrl").
+
 -define(SERVER, ?MODULE).
 
--record(state, {
-				id1 :: string(),
-				id2 :: string()
-			   }).
--type state() :: #state{}.
+-type state() :: list({string(), pid()}).
 
 %%%===================================================================
 %%% API
@@ -34,8 +32,18 @@
 start_link() ->
 	gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
-match(UserId) ->
-	"12345".
+wait_for_matching(UserId) ->
+	gen_server:call(?SERVER, {reservation,UserId}),
+	receive
+		{?SERVER, {matching, MatchingId}} ->
+			{matching, MatchingId};
+		%% DEBUG: delete the code below after this program is completed
+		Other ->
+			io:format("~p~n", [Other]),
+			no_matching
+	after ?MATCHING_WAIT_TIME ->
+		no_matching
+	end.
 
 %%%===================================================================
 %%% gen_server callbacks
@@ -54,7 +62,8 @@ match(UserId) ->
 		  ignore.
 init([]) ->
 	process_flag(trap_exit, true),
-	{ok, #state{id1=nil,id2=nil}}.
+	{ok, []}.
+%	{ok, #state{id1=nil,id2=nil}}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -71,9 +80,15 @@ init([]) ->
 		  {noreply, NewState :: state(), hibernate} |
 		  {stop, Reason :: term(), Reply :: term(), NewState :: state()} |
 		  {stop, Reason :: term(), NewState :: state()}.
-handle_call(_Request, _From, State) ->
-	Reply = ok,
-	{reply, Reply, State}.
+handle_call({reservation,UserId}, {From,_Tag}, State) when not (is_list(UserId) andalso is_pid(From)) ->
+	{reply, badarg, State};
+handle_call({reservation,UserId}, {From,_Tag}, State) when length(State)+1 =:= ?PLAYER_NUM ->
+	FinalState = [{UserId,From} | State],
+	spawn(fun() -> match(FinalState) end),
+	{reply, ok, []};
+handle_call({reservation,UserId}, {From,_Tag}, State) ->
+	NewState = [{UserId,From} | State],
+	{reply, ok, NewState}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -146,3 +161,17 @@ format_status(_Opt, Status) ->
 %%%===================================================================
 %%% Internal functions
 %%%===================================================================
+-spec match(State :: state()) -> term().
+match(State) ->
+	{Ids, Pids} = lists:unzip(State),
+%	[Id, Pid] = Pairs,
+	MatchingId = generate_matching_id(),
+	Fun = fun(Pid) ->
+				  Pid ! {?SERVER, {matching,MatchingId} }
+		  end,
+	lists:foreach(Fun, Pids).
+%	Pid ! {?SERVER, {matching,"9876"}}.
+
+-spec generate_matching_id() -> string().
+generate_matching_id() ->
+	binary_to_list(base64:encode(crypto:strong_rand_bytes(?MATCHING_ID_STRENGTH)) ).
