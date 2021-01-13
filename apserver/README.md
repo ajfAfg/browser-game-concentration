@@ -15,7 +15,7 @@
 - [EUnit](http://erlang.org/doc/apps/eunit/chapter.html)
 - [Erros and Handling](https://erlang.org/doc/reference_manual/errors.html)
 
-## Running server
+## Running server automatically
 
 - [erl](http://erlang.org/doc/man/erl.html)
 - [run_erl](https://erlang.org/doc/man/run_erl.html)
