@@ -1,0 +1,2 @@
+%-define(TIMEOUT, 60000).
+-define(MATCHING_WAIT_TIME, 6000).
