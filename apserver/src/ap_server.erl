@@ -1,7 +1,8 @@
 -module(ap_server).
 -export([start/1]).
 
-start([Domain | _]) ->
+%start([Domain | _]) ->
+start(Domain) ->
 	inets:start(),
 	{ok, Pid} = inets:start(httpd, prop_list(Domain) ),
 	Pid.
