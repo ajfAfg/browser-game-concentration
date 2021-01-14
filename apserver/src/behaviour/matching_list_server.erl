@@ -5,27 +5,19 @@
 %% API
 -export([start_link/0]).
 -export([add_matching/2]).
--export([delete_matching/1]).
--export([delete_matching/2]).
--export([search_matching/1]).
--export([search_matching/2]).
+-export([delete_matching/1, delete_matching/2]).
+-export([search_matching/1, search_matching/2]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
 		 terminate/2, code_change/3, format_status/2]).
 
--export_type([matching_id/0]).
--export_type([user_id/0]).
--export_type([match_info/0]).
-
 -include_lib("src/behaviour/config.hrl").
+-include_lib("src/behaviour/match.hrl").
 
 -define(SERVER, ?MODULE).
 
--type matching_id() :: string().
--type user_id() :: string().
--type match_info() :: {matching_id(), list(user_id())}.
--type state() :: list(match_info()).
+-type state() :: list(matching_info()).
 
 %%%===================================================================
 %%% API
