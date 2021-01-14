@@ -12,13 +12,12 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
 		 terminate/2, code_change/3, format_status/2]).
 
+-include_lib("src/behaviour/match.hrl").
+
 -define(SERVER, ?MODULE).
 
 %-type deck_for_match() :: {deck:deck(), matching_list_server:match_info()}.
--type deck_for_match() :: {
-						   matching_list_server:matching_id(),
-						   deck:deck()
-						  }.
+-type deck_for_match() :: {matching_id(),deck:deck()}.
 -type state() :: list(deck_for_match()).
 
 %%%===================================================================

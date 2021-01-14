@@ -1,0 +1,3 @@
+-type matching_id() :: string().
+-type user_id() :: string().
+-type matching_info() :: string().

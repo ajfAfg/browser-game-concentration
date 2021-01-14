@@ -14,7 +14,8 @@
 
 -define(SERVER, ?MODULE).
 
--type state() :: list({string(), pid()}).
+-type user_id() :: string().
+-type state() :: list({user_id(), pid()}).
 
 %%%===================================================================
 %%% API
