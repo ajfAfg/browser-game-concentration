@@ -14,5 +14,11 @@ len(String) when is_list(String) ->
 
 %% HACK: This function does not fit in here. Need modeling Entity and Entity list.
 get_entity_with_tag(EntityList, Tag) ->
-	{_, Entity} = lists:keyfind(Tag, 1, EntityList),
-	Entity.
+	case lists:keyfind(Tag, 1, EntityList) of
+		{_, Entity} ->
+			Entity;
+		false ->
+			""
+	end.
+%	{_, Entity} = lists:keyfind(Tag, 1, EntityList),
+%	Entity.
