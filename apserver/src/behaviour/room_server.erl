@@ -161,16 +161,15 @@ format_status(_Opt, Status) ->
 %%%===================================================================
 %%% Internal functions
 %%%===================================================================
--spec match(State :: state()) -> term().
+-spec match(State :: state()) -> ok.
 match(State) ->
 	{Ids, Pids} = lists:unzip(State),
-%	[Id, Pid] = Pairs,
 	MatchingId = generate_matching_id(),
+	matching_list_server:add_matching(MatchingId, Ids),
 	Fun = fun(Pid) ->
 				  Pid ! {?SERVER, {matching,MatchingId} }
 		  end,
 	lists:foreach(Fun, Pids).
-%	Pid ! {?SERVER, {matching,"9876"}}.
 
 -spec generate_matching_id() -> string().
 generate_matching_id() ->
