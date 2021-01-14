@@ -71,7 +71,15 @@ init([]) ->
 			   type => worker,
 			   modules => [providing_deck_server]},
 
-	{ok, {SupFlags, [Child1,Child2,Child3]} }.
+	Child4 = #{id => make_ref(),
+			   start => {sharing_move_server, start_link, []},
+			   restart => permanent,
+			   shutdown => 5000,
+			   type => worker,
+			   modules => [sharing_move_server]},
+
+	Children = [Child1, Child2, Child3, Child4],
+	{ok, {SupFlags, Children} }.
 
 %%%===================================================================
 %%% Internal functions
