@@ -50,14 +50,28 @@ init([]) ->
 				 intensity => 1,
 				 period => 5},
 
-	Child1 = #{id => tag1,
+	Child1 = #{id => make_ref(),
 			   start => {room_server, start_link, []},
 			   restart => permanent,
 			   shutdown => 5000,
 			   type => worker,
 			   modules => [room_server]},
 
-	{ok, {SupFlags, [Child1]}}.
+	Child2 = #{id => make_ref(),
+			   start => {matching_list_server, start_link, []},
+			   restart => permanent,
+			   shutdown => 5000,
+			   type => worker,
+			   modules => [matching_list_server]},
+
+	Child3 = #{id => make_ref(),
+			   start => {providing_deck_server, start_link, []},
+			   restart => permanent,
+			   shutdown => 5000,
+			   type => worker,
+			   modules => [providing_deck_server]},
+
+	{ok, {SupFlags, [Child1,Child2,Child3]} }.
 
 %%%===================================================================
 %%% Internal functions
