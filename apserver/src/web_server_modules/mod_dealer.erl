@@ -12,11 +12,16 @@ do(ModData) ->
 
 handle(ModData) ->
 	EntityList = uri_string:dissect_query(ModData#mod.entity_body),
-	UserId = misc:get_entity_with_tag(EntityList, "user_id"),
+%	UserId = misc:get_entity_with_tag(EntityList, "user_id"),
 	MathingId = misc:get_entity_with_tag(EntityList, "matching_id"),
 			   
-	Deck = misc:shuffle(deck:generate_deck() ),
-	CSV  = deck:convert_csv(Deck),
+%	Deck = misc:shuffle(deck:generate_deck() ),
+	CSV = case providing_deck_server:request_deck(MathingId) of
+			  no_deck ->
+				  "no_deck";
+			  Deck ->
+				  deck:convert_csv(Deck)
+		  end,
 	Head = [{code,200}, {content_type,"text/csv"}, {content_length,misc:len(CSV)}],
 	Body = [CSV],
 	NewData = [{response, {response,Head,Body}}],
