@@ -15,7 +15,7 @@ cd webserver
 make all
 ~~~
 
-Second, you can build and start a AP server.
+Second, you can build and start an AP server.
 
 ~~~bash
 cd apserver
