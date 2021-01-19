@@ -12,4 +12,9 @@ prop_list(Domain) ->
 	 {server_root, "."},
 	 {document_root, "."},
 	 {bind_address, Domain},
-	 {directory_index, ["index.html"]}].
+	 {directory_index, ["index.html"]},
+	 {mime_types, [
+				   {"html", "text/html"},
+				   {"css", "text/css"},
+				   {"js", "text/javascript"},
+				   {"svg", "image/svg+xml"}]}].
