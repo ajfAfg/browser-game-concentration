@@ -10,7 +10,7 @@ and specify a user ID for `user_id` for matching other players.
 You will get a matching ID if successful (A matching ID is an ID for identifying a match).
 
 ~~~bash
-curl -X POST -d 'user_id=foo' localhost:8080/room
+$ curl -X POST -d 'user_id=foo' localhost:8080/room
 uOfnxkVTu/aoUMUdnBDMg9dPjzXjJ2e5hLLlsrjXANs=
 ~~~
 
@@ -22,7 +22,7 @@ and specify a user ID and a matching ID for `user_id` and `matching_id` respecti
 You will get a deck represented CSV if successful.
 
 ~~~bash
-curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/dealer
+$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/dealer
 diamond,5
 spade,8
 spade,11
@@ -40,14 +40,14 @@ You will share a selected card among other players if successful.
 If you want to know a card selected another player, access as the code below.
 
 ~~~bash
-curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/match
+$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/match
 1,2
 ~~~
 
 If you want to tell other players a selected card, access as the code below.
 
 ~~~bash
-curl -X POST -d 'user_id=foo' -d 'matching_id=bar' -d 'x=1' -d 'y=2' localhost:8080/match
+$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' -d 'x=1' -d 'y=2' localhost:8080/match
 ok
 ~~~
 
