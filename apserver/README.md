@@ -5,12 +5,13 @@
 ### Room
 
 You can access `localhost:8080/room` by a HTTP POST request,
-and specify a user ID for `id` for matching other players.
+and specify a user ID for `user_id` for matching other players.
 
 You will get a matching ID if successful (A matching ID is an ID for identifying a match).
 
 ~~~bash
-curl -X POST -d 'id=foo' localhost:8080/room
+curl -X POST -d 'user_id=foo' localhost:8080/room
+uOfnxkVTu/aoUMUdnBDMg9dPjzXjJ2e5hLLlsrjXANs=
 ~~~
 
 ### Getting a deck
@@ -22,6 +23,11 @@ You will get a deck represented CSV if successful.
 
 ~~~bash
 curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/dealer
+diamond,5
+spade,8
+spade,11
+...
+spade,5
 ~~~
 
 ### Sharing a selected card
@@ -35,12 +41,14 @@ If you want to know a card selected another player, access as the code below.
 
 ~~~bash
 curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/match
+1,2
 ~~~
 
 If you want to tell other players a selected card, access as the code below.
 
 ~~~bash
 curl -X POST -d 'user_id=foo' -d 'matching_id=bar' -d 'x=1' -d 'y=2' localhost:8080/match
+ok
 ~~~
 
 ## References
