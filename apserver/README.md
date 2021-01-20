@@ -5,7 +5,7 @@
 ### Room
 
 You can access `localhost:8080/room` by a HTTP POST request,
-and specify a user ID for `user_id` for matching other players.
+and specify a user ID for `user_id` to match other players.
 
 You will get a matching ID if successful (A matching ID is an ID for identifying a match).
 
