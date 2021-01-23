@@ -71,14 +71,14 @@ init([]) ->
 			   type => worker,
 			   modules => [providing_deck_server]},
 
-	Child4 = #{id => make_ref(),
-			   start => {sharing_move_server, start_link, []},
+	MatchSup = #{id => make_ref(),
+			   start => {match_supervisor, start_link, []},
 			   restart => permanent,
 			   shutdown => 5000,
-			   type => worker,
-			   modules => [sharing_move_server]},
+			   type => supervisor,
+			   modules => [match_supervisor]},
 
-	Children = [Child1, Child2, Child3, Child4],
+	Children = [Child1, Child2, Child3, MatchSup],
 	{ok, {SupFlags, Children} }.
 
 %%%===================================================================
