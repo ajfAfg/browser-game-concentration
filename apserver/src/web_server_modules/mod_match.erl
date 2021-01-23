@@ -12,31 +12,32 @@ do(ModData) ->
 
 handle(ModData) ->
 	EntityList = uri_string:dissect_query(ModData#mod.entity_body),
-	UserId = misc:get_entity_with_tag(EntityList, "user_id"),
 	MatchingId = misc:get_entity_with_tag(EntityList, "matching_id"),
-	Reply = case 
-				{
-				 misc:get_entity_with_tag(EntityList, "x"),
-				 misc:get_entity_with_tag(EntityList, "y")
-				}
-			of
-				{"", ""} ->
-					fetch_opponent_move(MatchingId);
-				Move ->
-					ok = sharing_move_server:share_this_move(MatchingId, Move),
-					"ok"
+	UserId = misc:get_entity_with_tag(EntityList, "user_id"),
+	Turn = list_to_integer(misc:get_entity_with_tag(EntityList, "turn") ),
+	Fun = case
+			  {
+			   misc:get_entity_with_tag(EntityList, "x"),
+			   misc:get_entity_with_tag(EntityList, "y")
+			  }
+		  of
+			  {"", ""} ->
+				  fun() ->
+						  non_turn_player:know_turn_player_move(MatchingId, UserId, Turn)
+				  end;
+			  Move ->
+				  fun() ->
+						  turn_player:tell_other_players_my_move(MatchingId, UserId, Turn, Move)
+				  end
+		  end,
+	Reply = case Fun() of
+				Atom when is_atom(Atom) ->
+					atom_to_list(Atom);
+				{X, Y} ->
+					List = [[list_to_integer(X), list_to_integer(Y)]],
+					csv:list_to_csv(List)
 			end,
 	Head = [{code,200}, {content_type,"text/plain"}, {content_length,misc:len(Reply)}],
 	Body = [Reply],
 	NewData = [{response, {response,Head,Body}}],
 	{break, NewData}.
-
-fetch_opponent_move(MatchingId) ->
-	case sharing_move_server:fetch_opponent_move(MatchingId) of
-		timeout ->
-			"timeout";
-		{X, Y} ->
-			%% X and Y are the type string
-			List = [[list_to_integer(X), list_to_integer(Y)]],
-			csv:list_to_csv(List)
-	end.
