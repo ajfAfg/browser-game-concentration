@@ -1,6 +1,6 @@
 include ../Makefile
 
-DOMAIN := localhost
+#DOMAIN := localhost
 
 EBIN := ${shell mkdir -p ebin ; echo ebin}
 ERLCFLAGS := -W -o $(EBIN)
@@ -17,9 +17,8 @@ ERLC := erlc $(ERLCFLAGS)
 PIPE_DIR := /tmp/
 LOG_DIR := ${shell mkdir -p log ; echo log}
 EBIN_PATH := $(EBIN)
-INCLUDE := ${shell mkdir -p include; echo include}
 ERLD_FLAGS := $(PIPE_DIR) $(LOG_DIR)
-ERLD_FLAGS += "erl -run setup setup -pa $(EBIN) $(INCLUDE)"
+ERLD_FLAGS += "erl -run setup setup -pa $(EBIN)"
 ERLD := run_erl -daemon $(ERLD_FLAGS)
 
 MODS := ${shell find src -name '*.erl' | sed 's/.erl//'}
