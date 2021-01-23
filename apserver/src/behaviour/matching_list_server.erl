@@ -13,7 +13,7 @@
 		 terminate/2, code_change/3, format_status/2]).
 
 -include_lib("src/behaviour/config.hrl").
--include_lib("src/behaviour/match.hrl").
+-include_lib("src/behaviour/match_types.hrl").
 
 -define(SERVER, ?MODULE).
 
