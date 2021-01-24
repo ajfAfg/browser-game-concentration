@@ -71,6 +71,13 @@ init([]) ->
 			   type => worker,
 			   modules => [providing_deck_server]},
 
+	Child4 = #{id => make_ref(),
+			   start => {deciding_first_player_server, start_link, []},
+			   restart => permanent,
+			   shutdown => 5000,
+			   type => worker,
+			   modules => [deciding_first_player_server]},
+
 	MatchSup = #{id => make_ref(),
 			   start => {match_supervisor, start_link, []},
 			   restart => permanent,
@@ -78,7 +85,7 @@ init([]) ->
 			   type => supervisor,
 			   modules => [match_supervisor]},
 
-	Children = [Child1, Child2, Child3, MatchSup],
+	Children = [Child1, Child2, Child3, Child4, MatchSup],
 	{ok, {SupFlags, Children} }.
 
 %%%===================================================================
