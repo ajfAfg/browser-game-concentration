@@ -15,7 +15,6 @@ handle(ModData) ->
 %	UserId = misc:get_entity_with_tag(EntityList, "user_id"),
 	MathingId = misc:get_entity_with_tag(EntityList, "matching_id"),
 			   
-%	Deck = misc:shuffle(deck:generate_deck() ),
 	CSV = case providing_deck_server:request_deck(MathingId) of
 			  no_deck ->
 				  "no_deck";
