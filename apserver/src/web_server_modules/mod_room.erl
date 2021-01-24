@@ -15,7 +15,6 @@ handle(ModData) ->
 	UserId = misc:get_entity_with_tag(EntityList, "user_id"),
 	MatchingId = case room_server:wait_for_matching(UserId) of
 					 {matching, Id} ->
-						 providing_deck_server:generate_deck(Id),
 						 Id;
 					 no_matching ->
 						 "no_matching"
