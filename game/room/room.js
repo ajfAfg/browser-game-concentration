@@ -1,5 +1,6 @@
 document.getElementById('state').textContent = 'Connecting...';
 
+/*
 (() => {
     const waitTime = 60000;
     const startTime = Date.now();
@@ -15,8 +16,23 @@ document.getElementById('state').textContent = 'Connecting...';
         document.querySelector('#timer').innerHTML = `残り${remain}秒`;
     });
 })();
+*/
+(async () => {
+    const userId = generateUserId(32);
+    sessionStorage.setItem('userId', userId);
+    $.post(location.protocol + '//' + location.hostname + ':8080/room',
+        { 'user_id': '1' },
+        (matchingId) => {
+            if (matchingId === 'no_matching') {
+                window.location.href = '../';
+            } else {
+                sessionStorage.setItem('matchingId', matchingId);
+                window.location.href = '../match/';
+            }
+        }
+    );
+})();
 
-$.post(location.protocol + '//' + location.hostname + ':8080/room',
-    {'user_id' : '1'},
-    (dt) => alert(dt)
-);
+function generateUserId(n) {
+    return btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(n)))).substring(0,n);
+}
