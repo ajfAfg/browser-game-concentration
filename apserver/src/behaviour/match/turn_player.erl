@@ -56,7 +56,7 @@ tell_other_players_my_move(MatchingId, UserId, Turn, Move) ->
 		{match_move_dealer, {share,_Move} } ->
 			ok
 	after ?ALLOTTED_TIME ->
-		timeout
+			timeout
 	end.
 
 -spec get_turn_move(MatchingId :: matching_id(), Turn :: turn()) ->
@@ -112,7 +112,6 @@ handle_call({tell,MatchingId,UserId,Turn,Move}, _From, State) ->
 				 move => Move
 				},
 	NewInfos = TurnInfos#{Turn => MoveInfo},
-%	NewState = maps:update(MatchingId, NewInfos, State),
 	NewState = State#{MatchingId => NewInfos},
 	{reply, ok, NewState};
 
@@ -125,7 +124,6 @@ handle_call({get,MatchingId,Turn}, _From, State) ->
 				end,
 	MoveInfo = case maps:find(Turn,TurnInfos) of
 			   {ok, Maps2} ->
-%					list_to_tuple(maps:values(Maps2) );
 					   Maps2;
 				error ->
 					no_move

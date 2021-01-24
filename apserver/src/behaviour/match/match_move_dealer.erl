@@ -85,8 +85,8 @@ init([]) ->
 		  {stop, Reason :: term(), NewState :: state()}.
 handle_call({share,MatchingId,UserId,Turn}, {From,_Tag}, State) ->
 	{Turn,Players} = case maps:find(MatchingId,State) of
-						 {ok, Maps} ->
-							 Maps;
+						 {ok, Tuple} ->
+							 Tuple;
 						 error ->
 							 {Turn, []}
 					 end,
