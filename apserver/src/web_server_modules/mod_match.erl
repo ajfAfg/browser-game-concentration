@@ -1,6 +1,7 @@
 -module(mod_match).
 -export([do/1]).
 -include_lib("inets/include/httpd.hrl").
+-include_lib("src/server_config.hrl").
 
 do(ModData) ->
 	case ModData#mod.request_uri =:= "/match" andalso ModData#mod.method =:= "POST" of
@@ -37,7 +38,7 @@ handle(ModData) ->
 					List = [[list_to_integer(X), list_to_integer(Y)]],
 					csv:list_to_csv(List)
 			end,
-	Head = [{code,200}, {content_type,"text/plain"}, {content_length,misc:len(Reply)}],
+	Head = [{code,200}, {content_type,"text/csv"}, {content_length,misc:len(Reply)}, ?ACAO],
 	Body = [Reply],
 	NewData = [{response, {response,Head,Body}}],
 	{break, NewData}.

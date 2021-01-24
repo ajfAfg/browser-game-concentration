@@ -1,7 +1,7 @@
 -module(setup).
 -export([setup/0]).
 
--define(HOST, "localhost").
+-include_lib("src/server_config.hrl").
 
 setup() ->
     Fun = fun() ->

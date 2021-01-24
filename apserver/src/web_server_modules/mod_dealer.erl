@@ -1,6 +1,7 @@
 -module(mod_dealer).
 -export([do/1]).
 -include_lib("inets/include/httpd.hrl").
+-include_lib("src/server_config.hrl").
 
 do(ModData) ->
 	case ModData#mod.request_uri =:= "/dealer" andalso ModData#mod.method =:= "POST" of
@@ -21,7 +22,7 @@ handle(ModData) ->
 			  Deck ->
 				  deck:convert_csv(Deck)
 		  end,
-	Head = [{code,200}, {content_type,"text/csv"}, {content_length,misc:len(CSV)}],
+	Head = [{code,200}, {content_type,"text/csv"}, {content_length,misc:len(CSV)}, ?ACAO],
 	Body = [CSV],
 	NewData = [{response, {response,Head,Body}}],
 	{break, NewData}.
