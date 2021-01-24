@@ -37,11 +37,7 @@ wait_for_matching(UserId) ->
 	gen_server:call(?SERVER, {reservation,UserId}),
 	receive
 		{?SERVER, {matching, MatchingId}} ->
-			{matching, MatchingId};
-		%% DEBUG: delete the code below after this program is completed
-		Other ->
-			io:format("~p~n", [Other]),
-			no_matching
+			{matching, MatchingId}
 	after ?MATCHING_WAIT_TIME ->
 		no_matching
 	end.
@@ -164,9 +160,12 @@ format_status(_Opt, Status) ->
 %%%===================================================================
 -spec match(State :: state()) -> ok.
 match(State) ->
-	{Ids, Pids} = lists:unzip(State),
+	{UserIds, Pids} = lists:unzip(State),
 	MatchingId = generate_matching_id(),
-	matching_list_server:add_matching(MatchingId, Ids),
+
+	providing_deck_server:generate_deck(MatchingId),
+	deciding_first_player_server:decide_first_player(MatchingId, UserIds),
+	matching_list_server:add_matching(MatchingId, UserIds),
 	Fun = fun(Pid) ->
 				  Pid ! {?SERVER, {matching,MatchingId} }
 		  end,
