@@ -21,7 +21,7 @@ document.getElementById('state').textContent = 'Connecting...';
     const userId = generateUserId(32);
     sessionStorage.setItem('userId', userId);
     $.post(location.protocol + '//' + location.hostname + ':8080/room',
-        { 'user_id': '1' },
+        { 'user_id': userId },
         (matchingId) => {
             if (matchingId === 'no_matching') {
                 window.location.href = '../';
