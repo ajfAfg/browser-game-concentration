@@ -17,8 +17,9 @@ handle(ModData) ->
 	MatchingId = case room_server:wait_for_matching(UserId) of
 					 {matching, Id} ->
 						 Id;
-					 no_matching ->
-						 "no_matching"
+					 _ ->
+%						 "no_matching"
+						 "false"
 				 end,
 	Head = [{code,200}, {content_type,"text/plain"}, {content_length,misc:len(MatchingId)}, ?ACAO],
 	Body = [MatchingId],
