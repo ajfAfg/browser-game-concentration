@@ -42,13 +42,6 @@ start_link() ->
 		Turn :: turn(),
 		Move :: move()
 	   ) -> ok | timeout.
-tell_other_players_my_move(MatchingId, UserId, Turn, Move)
-  when not (is_list(MatchingId) andalso
-			is_list(UserId) andalso
-			is_integer(Turn) andalso
-			is_tuple(Move)
-		   ) ->
-	badarg;
 tell_other_players_my_move(MatchingId, UserId, Turn, Move) ->
 	gen_server:call(?SERVER, {tell,MatchingId,UserId,Turn,Move}),
 	match_move_dealer:share_move(MatchingId, UserId, Turn),
@@ -61,8 +54,6 @@ tell_other_players_my_move(MatchingId, UserId, Turn, Move) ->
 
 -spec get_turn_move(MatchingId :: matching_id(), Turn :: turn()) ->
 		  {UserId :: user_id(), Move :: move()} | no_move.
-get_turn_move(MatchingId, Turn) when not (is_list(MatchingId) andalso is_integer(Turn)) ->
-	badarg;
 get_turn_move(MatchingId, Turn) ->
 	gen_server:call(?SERVER, {get,MatchingId,Turn}).
 

@@ -37,13 +37,7 @@ start_link() ->
 		MatchingId :: matching_id(),
 		UserId :: user_id(),
 		Turn :: turn()
-	   ) -> Move :: move() | timeout | badarg.
-know_turn_player_move(MatchingId, UserId, Turn)
-  when not (is_list(MatchingId) andalso
-			is_list(UserId) andalso
-			is_integer(Turn)
-		   ) ->
-	badarg;
+	   ) -> Move :: move() | timeout.
 know_turn_player_move(MatchingId, UserId, Turn) ->
 	match_move_dealer:share_move(MatchingId, UserId, Turn),
 	receive
