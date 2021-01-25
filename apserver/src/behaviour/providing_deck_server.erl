@@ -16,9 +16,7 @@
 
 -define(SERVER, ?MODULE).
 
-%-type deck_for_match() :: {deck:deck(), matching_list_server:match_info()}.
--type deck_for_match() :: {matching_id(),deck:deck()}.
--type state() :: list(deck_for_match()).
+-type state() :: #{matching_id() => deck:deck()}.
 
 %%%===================================================================
 %%% API
@@ -62,7 +60,7 @@ request_deck(MatchingId) ->
 		  ignore.
 init([]) ->
 	process_flag(trap_exit, true),
-	{ok, []}.
+	{ok, #{}}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -80,10 +78,10 @@ init([]) ->
 		  {stop, Reason :: term(), Reply :: term(), NewState :: state()} |
 		  {stop, Reason :: term(), NewState :: state()}.
 handle_call({request,MatchingId}, _From, State) ->
-	Reply = case lists:keyfind(MatchingId, 1, State) of
-				{MathingId, Deck} ->
+	Reply = case maps:find(MatchingId, State) of
+				{ok, Deck} ->
 					Deck;
-				_ ->
+				error ->
 					no_deck
 			end,
 	{reply, Reply, State}.
@@ -100,16 +98,11 @@ handle_call({request,MatchingId}, _From, State) ->
 		  {noreply, NewState :: state(), hibernate} |
 		  {stop, Reason :: term(), NewState :: state()}.
 handle_cast({generate,MatchingId}, State) ->
-	NewState = case lists:keymember(MatchingId,1,State) of
-				   true ->
-					   State;
-				   false ->
-					   Deck = misc:shuffle(deck:generate_deck() ),
-					   [{MatchingId, Deck} | State]
-			   end,
+	Deck = misc:shuffle(deck:generate_deck() ),
+	NewState = State#{MatchingId => Deck},
 	{noreply, NewState};
 handle_cast({delete,MatchingId}, State) ->
-	NewState = lists:keydelete(MatchingId, 1, State),
+	NewState = maps:remove(MatchingId, State),
 	{noreply, NewState}.
 
 %%--------------------------------------------------------------------
