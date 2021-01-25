@@ -89,6 +89,15 @@ window.onload=function(){
           var str2="プレイヤー2: "+player2Point+"枚";
           document.getElementById("player2_point").innerHTML = str2;
         }
+        if(player1Point+player2Point>=52){
+          if(player1Point>player2Point){
+            window.location.href = 'http://127.0.0.1:5500/kadai_winter/browser-game-concentration/game/match/win1.html';// 1の勝ち
+          }else if(player2Point>player1Point){
+            window.location.href = 'http://127.0.0.1:5500/kadai_winter/browser-game-concentration/game/match/win2.html';// 2の勝ち
+          }else{
+            window.location.href = 'http://127.0.0.1:5500/kadai_winter/browser-game-concentration/game/match/win12.html';// 同点
+          }
+        }
       }else{
         playerMarker++;
         // 待機時間を作る関数
@@ -108,5 +117,4 @@ window.onload=function(){
       };
     }
   }
-  
 }
