@@ -17,10 +17,10 @@ handle(ModData) ->
 	MathingId = misc:get_entity_with_tag(EntityList, "matching_id"),
 			   
 	CSV = case providing_deck_server:request_deck(MathingId) of
-			  no_deck ->
-				  "no_deck";
-			  Deck ->
-				  deck:convert_csv(Deck)
+			  Deck when is_list(Deck) ->
+				  deck:convert_csv(Deck);
+			  _ ->
+				  "false"
 		  end,
 	Head = [{code,200}, {content_type,"text/csv"}, {content_length,misc:len(CSV)}, ?ACAO],
 	Body = [CSV],
