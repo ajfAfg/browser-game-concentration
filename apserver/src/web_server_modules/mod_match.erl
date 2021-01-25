@@ -32,11 +32,13 @@ handle(ModData) ->
 				  end
 		  end,
 	Reply = case Fun() of
-				Atom when is_atom(Atom) ->
-					atom_to_list(Atom);
 				{X, Y} ->
 					List = [[list_to_integer(X), list_to_integer(Y)]],
-					csv:list_to_csv(List)
+					csv:list_to_csv(List);
+				ok ->
+					"ok";
+				_ ->
+					"false"
 			end,
 	Head = [{code,200}, {content_type,"text/csv"}, {content_length,misc:len(Reply)}, ?ACAO],
 	Body = [Reply],

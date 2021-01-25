@@ -39,13 +39,7 @@ start_link() ->
 		MatchingId :: matching_id(),
 		UserId :: user_id(),
 		Turn :: turn()
-	   ) -> ok | badarg.
-share_move(MatchingId, UserId, Turn)
-  when not (is_list(MatchingId) andalso
-			is_list(UserId) andalso
-			is_integer(Turn)
-		   ) ->
-	badarg;
+	   ) -> ok.
 share_move(MatchingId, UserId, Turn) ->
 	gen_server:call(?SERVER, {share,MatchingId,UserId,Turn}).
 

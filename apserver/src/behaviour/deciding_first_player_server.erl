@@ -33,16 +33,12 @@
 start_link() ->
 	gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
--spec decide_first_player(MatchingId :: matching_id(), UserIds :: list(user_id()) ) -> ok | badarg.
-decide_first_player(MatchingId, UserIds) when not (is_list(MatchingId) andalso is_list(UserIds))->
-	badarg;
+-spec decide_first_player(MatchingId :: matching_id(), UserIds :: list(user_id()) ) -> ok.
 decide_first_player(MatchingId, UserIds) ->
 	gen_server:cast(?SERVER, {decide,MatchingId,UserIds}),
 	ok.
 
 -spec is_first_player(MatchingId :: matching_id(), UserId :: user_id()) -> boolean().
-is_first_player(MatchingId, UserId) when not (is_list(MatchingId) andalso is_list(UserId))->
-	false;
 is_first_player(MatchingId, UserId) ->
 	gen_server:call(?SERVER, {get,MatchingId,UserId}).
 
