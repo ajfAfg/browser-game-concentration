@@ -1,28 +1,13 @@
 document.getElementById('state').textContent = 'Connecting...';
 
-/*
-(() => {
-    const waitTime = 60000;
-    const startTime = Date.now();
-    
-    const timeId = setInterval(() => {
-        const diff = waitTime - (Date.now() - startTime);
-        const remain = Math.ceil(diff / 1000);
-    
-        if (remain <= 0) {
-            clearInterval(timeId);
-            window.location.href = '../';
-        }
-        document.querySelector('#timer').innerHTML = `残り${remain}秒`;
-    });
-})();
-*/
 (async () => {
     const userId = generateUserId(32);
     sessionStorage.setItem('userId', userId);
-    $.post(location.protocol + '//' + location.hostname + ':8080/room',
+    const url = location.protocol + '//' + location.hostname + ':8080/room';
+    $.post(
+        url,
         { 'user_id': userId },
-        (matchingId) => {
+        matchingId => {
             if (matchingId === 'no_matching') {
                 window.location.href = '../';
             } else {
