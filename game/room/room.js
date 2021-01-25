@@ -7,11 +7,12 @@ document.getElementById('state').textContent = 'Connecting...';
     $.post(
         url,
         { 'user_id': userId },
-        matchingId => {
-            if (matchingId === 'no_matching') {
+        response => {
+            console.log('res: ', response);
+            if (response === 'false') {
                 window.location.href = '../';
             } else {
-                sessionStorage.setItem('matchingId', matchingId);
+                sessionStorage.setItem('matchingId', response);
                 window.location.href = '../match/';
             }
         }
