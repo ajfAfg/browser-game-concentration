@@ -97,8 +97,7 @@ handle_call({get,MatchingId,UserId}, _From, State) ->
 		  {noreply, NewState :: state(), hibernate} |
 		  {stop, Reason :: term(), NewState :: state()}.
 handle_cast({decide,MatchingId,UserIds}, State) ->
-	random:seed(),
-	UserId = lists:nth(random:uniform(length(UserIds)), UserIds),
+	UserId = lists:nth(rand:uniform(length(UserIds)), UserIds),
 	NewState = State#{MatchingId => UserId},
 	{noreply, NewState}.
 
