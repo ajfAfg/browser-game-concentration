@@ -1,14 +1,21 @@
 document.getElementById('state').textContent = 'Connecting...';
 
-(async () => {
-    const userId = generateUserId(32);
-    sessionStorage.setItem('userId', userId);
-    const url = location.protocol + '//' + location.hostname + ':8080/room';
-    $.post(
-        url,
-        { 'user_id': userId },
-        response => {
-            console.log('res: ', response);
+(() => {
+    const userId = sessionStorage.getItem('userId');
+    if (userId === null) {
+        window.location.href = '../';
+    } else {
+        connectRoomAsync(userId);
+    }
+
+    async function connectRoomAsync(userId) {
+        const url = location.protocol + '//' + location.hostname + ':8080/room';
+        const data = {
+            'user_id': userId
+        };
+        $.post(url, data, callback);
+    
+        function callback(response) {
             if (response === 'false') {
                 window.location.href = '../';
             } else {
@@ -16,9 +23,5 @@ document.getElementById('state').textContent = 'Connecting...';
                 window.location.href = '../match/';
             }
         }
-    );
+    }
 })();
-
-function generateUserId(n) {
-    return btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(n)))).substring(0,n);
-}

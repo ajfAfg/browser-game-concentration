@@ -11,11 +11,11 @@
 		 terminate/2, code_change/3, format_status/2]).
 
 -include_lib("src/behaviour/config.hrl").
+-include_lib("src/behaviour/match_types.hrl").
 
 -define(SERVER, ?MODULE).
 
--type user_id() :: string().
--type state() :: list({user_id(), pid()}).
+-type state() :: #{user_id() => pid()}.
 
 %%%===================================================================
 %%% API
@@ -39,7 +39,7 @@ wait_for_matching(UserId) ->
 		{?SERVER, {matching, MatchingId}} ->
 			{matching, MatchingId}
 	after ?MATCHING_WAIT_TIME ->
-		no_matching
+		timeout
 	end.
 
 %%%===================================================================
@@ -59,8 +59,7 @@ wait_for_matching(UserId) ->
 		  ignore.
 init([]) ->
 	process_flag(trap_exit, true),
-	{ok, []}.
-%	{ok, #state{id1=nil,id2=nil}}.
+	{ok, #{}}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -77,14 +76,17 @@ init([]) ->
 		  {noreply, NewState :: state(), hibernate} |
 		  {stop, Reason :: term(), Reply :: term(), NewState :: state()} |
 		  {stop, Reason :: term(), NewState :: state()}.
-handle_call({reservation,UserId}, {From,_Tag}, State) when not (is_list(UserId) andalso is_pid(From)) ->
-	{reply, badarg, State};
-handle_call({reservation,UserId}, {From,_Tag}, State) when length(State)+1 =:= ?PLAYER_NUM ->
-	FinalState = [{UserId,From} | State],
-	spawn(fun() -> match(FinalState) end),
-	{reply, ok, []};
 handle_call({reservation,UserId}, {From,_Tag}, State) ->
-	NewState = [{UserId,From} | State],
+	NewState = case State#{UserId => From} of
+				   S ->
+					   case maps:size(S) =:= ?PLAYER_NUM of
+						   true ->
+							   spawn(fun() -> match(S) end),
+							   #{};
+						   false ->
+							   S
+					   end
+			   end,
 	{reply, ok, NewState}.
 
 %%--------------------------------------------------------------------
@@ -160,7 +162,7 @@ format_status(_Opt, Status) ->
 %%%===================================================================
 -spec match(State :: state()) -> ok.
 match(State) ->
-	{UserIds, Pids} = lists:unzip(State),
+	{UserIds, Pids} = lists:unzip(maps:to_list(State) ),
 	MatchingId = generate_matching_id(),
 
 	providing_deck_server:generate_deck(MatchingId),
