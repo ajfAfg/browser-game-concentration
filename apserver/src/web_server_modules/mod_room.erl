@@ -18,7 +18,6 @@ handle(ModData) ->
 					 {matching, Id} ->
 						 Id;
 					 _ ->
-%						 "no_matching"
 						 "false"
 				 end,
 	Head = [{code,200}, {content_type,"text/plain"}, {content_length,misc:len(MatchingId)}, ?ACAO],

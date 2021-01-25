@@ -168,6 +168,7 @@ match(State) ->
 	providing_deck_server:generate_deck(MatchingId),
 	deciding_first_player_server:decide_first_player(MatchingId, UserIds),
 	matching_list_server:add_matching(MatchingId, UserIds),
+
 	Fun = fun(Pid) ->
 				  Pid ! {?SERVER, {matching,MatchingId} }
 		  end,
