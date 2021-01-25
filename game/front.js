@@ -1,3 +1,9 @@
+document.getElementById('js-start-button')
+.addEventListener(
+    'click',
+    () => {location.href = 'room/'}
+);
+
 (() => {
     sessionStorage.removeItem('matchingId');
     if (sessionStorage.getItem('userId') === null) {

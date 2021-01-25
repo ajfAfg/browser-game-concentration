@@ -1,4 +1,4 @@
-document.getElementById('state').textContent = 'Connecting...';
+document.getElementById('js-state').textContent = 'Connecting...';
 
 (() => {
     const userId = sessionStorage.getItem('userId');
