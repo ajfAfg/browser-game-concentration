@@ -50,26 +50,6 @@ window.onload=function(){
     table.appendChild(tr);
   }
 
-
-  // 待機時間のための変数
-  function sleep(waitSec, callbackFunc) {
-    // 経過時間（秒）
-    var spanedSec=0;
-    // 1秒間隔で無名関数を実行
-    var id = setInterval(function () {
-        spanedSec++;
-        // 経過時間 >= 待機時間の場合、待機終了。
-        if (spanedSec >= waitSec) {
-            // タイマー停止
-            clearInterval(id);
-            // 完了時、コールバック関数を実行
-            if (callbackFunc){
-              callbackFunc();
-            } 
-        }
-    }, 1200);
-  }
-
   // 神経衰弱
   // 初期設定
   let firstCard=null;
@@ -82,19 +62,23 @@ window.onload=function(){
   document.getElementById("player2_point").innerHTML = str2;
   document.getElementById("player").innerHTML = "プレイヤー1のターンです";
 
+  let timerMarker=1;// 待機時間終了したかの判断
+
   function flip(e){
     let td=e.target;
 
-    if(!td.classList.contains('back')){
-      return;// 表のカードまたは待機時間中はをクリックしても何もしない。
+    if(!td.classList.contains('back') || (timerMarker==0)){
+      return;// 表のカードまたは待機時間のときはをクリックしても何もしない
     }
-    td.classList.remove('back');// カードを表にする。
+    td.classList.remove('back');// カードを表にする
     if(firstCard===null){
       firstCard=td;// １枚目だったら今めくったカードをfirstCardに設定
     }else{
+      timerMarker=0;
       // ２枚目だったら1枚目と比較して結果を判定する。
       if(firstCard.figure===td.figure){
         // ２枚が同じだったときの処理
+        timerMarker=1;
         firstCard=null;
         if(playerMarker%2==0){
           player1Point=player1Point+2;
@@ -107,11 +91,15 @@ window.onload=function(){
         }
       }else{
         playerMarker++;
-        sleep(1, function(){
+        // 待機時間を作る関数
+        var alertmsg = function(){
           firstCard.classList.add('back');
           td.classList.add('back');
           firstCard=null;
-        })
+          timerMarker=1;
+        }
+        setTimeout(alertmsg, 1200);
+
         if(playerMarker%2==0){
           document.getElementById("player").innerHTML="プレイヤー1のターンです";
         }else{
@@ -120,4 +108,5 @@ window.onload=function(){
       };
     }
   }
+  
 }
