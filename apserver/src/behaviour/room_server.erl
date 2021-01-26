@@ -39,7 +39,8 @@ wait_for_matching(UserId) ->
 		{?SERVER, {matching, MatchingId}} ->
 			{matching, MatchingId}
 	after ?MATCHING_WAIT_TIME ->
-		timeout
+			gen_server:cast(?SERVER, {delete,UserId}),
+			timeout
 	end.
 
 %%%===================================================================
@@ -100,8 +101,9 @@ handle_call({reservation,UserId}, {From,_Tag}, State) ->
 		  {noreply, NewState :: state(), Timeout :: timeout()} |
 		  {noreply, NewState :: state(), hibernate} |
 		  {stop, Reason :: term(), NewState :: state()}.
-handle_cast(_Request, State) ->
-	{noreply, State}.
+handle_cast({delete,UserId}, State) ->
+	NewState = maps:remove(UserId, State),
+	{noreply, NewState}.
 
 %%--------------------------------------------------------------------
 %% @private
