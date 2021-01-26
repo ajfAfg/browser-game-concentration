@@ -14,13 +14,17 @@ MODS := ${shell find src -name '*.erl' | sed 's/.erl//'}
 %.beam: %.erl
 	$(ERLC) $<
 
-.PHONY: all start stop compile ps clean
+.PHONY: all start start2 stop compile ps clean
 
 # The commands all and start need to execute under root user
 all: compile start
 
 start:
 	cd ../game && sudo $(ERLD)
+
+# use this target instead of the target start if a processing of the target fails
+start2:
+	cd ../game && sudo bash -c "erl -noshell -run web_server start -pa ../webserver/ebin &"
 
 stop:
 	ps aux | grep erlang | grep web_server | grep -v grep | awk '{ print "kill -9", $$2 }' | sudo sh
