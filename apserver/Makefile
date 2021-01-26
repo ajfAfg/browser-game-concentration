@@ -23,7 +23,7 @@ start:
 	$(ERLD)
 
 stop:
-	ps aux | grep erlang | grep setup | grep -v grep | awk '{ print "kill -9", $$2 }' | sh
+	ps aux | grep erlang | grep ap_server | grep -v grep | awk '{ print "kill -9", $$2 }' | sh
 
 compile: ${MODS:%=%.beam}
 
