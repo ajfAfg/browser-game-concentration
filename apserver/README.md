@@ -45,7 +45,7 @@ true
 ### Sharing a selected card
 
 You can access `localhost:8080/match` by a HTTP POST request,
-and specify a user ID and a matching ID for `user_id` and `matching_id` respectively.
+and specify a user ID and a matching ID and a current turn for `user_id` and `matching_id` and `turn` respectively.
 
 You will share a selected card among other players if successful.
 
