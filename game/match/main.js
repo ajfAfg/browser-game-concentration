@@ -33,16 +33,28 @@ window.onload=function(){
     }
   }
 
+  let x=0;
+  let y=0;
+  let Y;
+  let X;
   // トランプを配置
   shuffle();
   const table=document.getElementById('table');
   for(let i=0;i<marks.length;i++){
+    y=i;
+    Y="y="+i;
     let tr=document.createElement('tr');
     for(let j=0;j<13;j++){
+      x=j;
+      X="x="+j;
       let td=document.createElement('td');
+      console.log(td);
       let tempCard=cards[i*13+j];
+      //console.log(cards[i*13+j]);
       td.classList.add('card','back');
+      td.classList.add(X,Y);
       td.onclick=flip;
+
       td.figure=tempCard.figure;
       td.style.backgroundImage=`url(images/${tempCard.front})`;
       tr.appendChild(td);
@@ -117,4 +129,6 @@ window.onload=function(){
       };
     }
   }
+
+
 }
