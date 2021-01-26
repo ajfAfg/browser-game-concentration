@@ -21,7 +21,8 @@
                 window.location.href = '../';
             } else {
                 sessionStorage.setItem('matchingId', response);
-                window.location.href = '../match/';
+                // window.location.href = '../match/';
+                window.location.href = '../match/index2.html';
             }
         })
         .fail(() => {

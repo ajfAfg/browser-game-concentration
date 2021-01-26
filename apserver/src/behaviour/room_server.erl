@@ -168,6 +168,7 @@ match(State) ->
 	MatchingId = generate_matching_id(),
 
 	providing_deck_server:generate_deck(MatchingId),
+	io:format("~p: ~p~n", [MatchingId, providing_deck_server:request_deck(MatchingId)]),
 	deciding_first_player_server:decide_first_player(MatchingId, UserIds),
 	matching_list_server:add_matching(MatchingId, UserIds),
 
@@ -178,4 +179,11 @@ match(State) ->
 
 -spec generate_matching_id() -> string().
 generate_matching_id() ->
-	binary_to_list(base64:encode(crypto:strong_rand_bytes(?MATCHING_ID_STRENGTH)) ).
+	make_list(fun random_char/0, ?MATCHING_ID_STRENGTH).
+	%binary_to_list(base64:encode(crypto:strong_rand_bytes(?MATCHING_ID_STRENGTH)) ).
+
+make_list(F, N) ->
+	[F() || _ <- lists:seq(0,N)].
+
+random_char() ->
+	rand:uniform($Z-$A+1) - 1 + $A.

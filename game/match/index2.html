@@ -7,6 +7,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store" />
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.3.2.js"></script>
 <style>
 h2{
 	font-size:30px;
@@ -21,17 +23,50 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 }
 </style>
 	<script type="text/javascript">
-	var card_i=new Array("1h","1s","1c","1d","2h","2s","2c","2d","3h","3s","3c","3d","4h","4s","4c","4d","5h","5s","5c","5d","6h","6s","6c","6d","7h","7s","7c","7d","8h","8s","8c","8d","9h","9s","9c","9d","xh","xs","xc","xd","jh","js","jc","jd","qh","qs","qc","qd","kh","ks","kc","kd");
-	var card_c=new Array();
-	var nn=52;	//残りのカード枚数
-	var oo=0;	//開いたカードの枚数
-	var c1=0;	//開いたカードの１枚めの番号
-	var i1=0;	//開いたカードの１枚めの画像番号
-	let playerCounter=0;
-	let player1point=0;
-	let player2point=0;
+	(() => {
+		const matchingId = sessionStorage.getItem('matchingId');
+		if (matchingId === null) {
+	        window.location.href = '../';
+	    } else {
+	        connectRoomAsync(matchingId);
+	    }
 
-	timerID=10;
+	    async function connectRoomAsync(matchingId) {
+	        const url = location.protocol + '//' + location.hostname + ':8080/deck';
+	        const data = {
+				'matching_id': matchingId
+	        };
+			$.post(url, data)
+			.done(response => {
+				const csv = response.split('\n').filter(i => i).map(i => i.split(','));
+				const card_i = csv.map(i => i[1] + i[0].slice(0,1))
+					.map(i => i.replace('10', 'x').replace('11', 'j').replace('12', 'q').replace('13', 'k') );
+				
+				prepare(card_i);
+			});
+	    }
+	})();
+	
+	//
+	function prepare(card) {
+		// var card_i=new Array("1h","1s","1c","1d","2h","2s","2c","2d","3h","3s","3c","3d","4h","4s","4c","4d","5h","5s","5c","5d","6h","6s","6c","6d","7h","7s","7c","7d","8h","8s","8c","8d","9h","9s","9c","9d","xh","xs","xc","xd","jh","js","jc","jd","qh","qs","qc","qd","kh","ks","kc","kd");
+		card_i = card;
+		card_c = new Array;
+		for (i=0;i<card.length;i++) {card_c[i]=card_i[i]+".svg";}	//全カードをコピー
+		for (i=0;i<card.length;i++) document.images[i].src="ura.svg";	//全カードを裏で配置
+
+		nn=52;	//残りのカード枚数
+		oo=0;	//開いたカードの枚数
+		c1=0;	//開いたカードの１枚めの番号
+		i1=0;	//開いたカードの１枚めの画像番号
+		playerCounter=0;
+		player1point=0;
+		player2point=0;
+
+		timerID=10;
+	}
+	
+	/*
 	function Shuffle(){
 		for (i=0;i<52;i++) {card_c[i]=card_i[i]+".svg";}	//全カードをコピー
 		for (i=51;i>0;i--){	//かき混ぜる
@@ -44,7 +79,7 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 		oo=0;	//開けたカード枚数
 		for (i=0;i<28;i++) document.images[i].src="ura.svg";	//全カードを裏で配置
 	}
-
+*/
 	function Card(m){
 		if(playerCounter%2==0){
 			console.log(m);
@@ -135,13 +170,13 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 	</script>
 </head>
 
-<body onLoad="Shuffle()" style="font-size:15px;font-family:sans-serif;">
+<!-- <body onLoad="Shuffle()" style="font-size:15px;font-family:sans-serif;"> -->
 
 	<div style="text-align:center;">
 		<h2>神　経　衰　弱</h2>
 		<p>相手のターンはあなたが適当なカードをクリックすることで進行します</p>
 		<form style="margin-top:30px;">
-		<input type="button" value="並べ直し" onClick="Shuffle()" style="cursor:pointer; border-radius:5px; width:200px; padding:10px 0;border:1px solid #777; font-size:15px;">
+		<!-- <input type="button" value="並べ直し" onClick="Shuffle()" style="cursor:pointer; border-radius:5px; width:200px; padding:10px 0;border:1px solid #777; font-size:15px;"> -->
 		</form>
 		<p id="player"></p>
     	<p id="player1_point"></p>

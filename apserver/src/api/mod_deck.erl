@@ -19,7 +19,8 @@ handle(ModData) ->
 	CSV = case providing_deck_server:request_deck(MathingId) of
 			  Deck when is_list(Deck) ->
 				  deck:convert_csv(Deck);
-			  _ ->
+			  Other ->
+				  io:format("~p: ~p~n", [MathingId, Other]),
 				  "false"
 		  end,
 	Head = [{code,200}, {content_type,"text/csv"}, {content_length,misc:len(CSV)}, ?ACAO],
