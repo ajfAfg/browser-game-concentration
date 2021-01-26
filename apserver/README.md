@@ -16,13 +16,13 @@ uOfnxkVTu/aoUMUdnBDMg9dPjzXjJ2e5hLLlsrjXANs=
 
 ### Getting a deck
 
-You can access `localhost:8080/dealer` by a HTTP POST request,
+You can access `localhost:8080/deck` by a HTTP POST request,
 and specify a user ID and a matching ID for `user_id` and `matching_id` respectively.
 
 You will get a deck represented CSV if successful.
 
 ~~~bash
-$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/dealer
+$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/deck
 diamond,5
 spade,8
 spade,11
