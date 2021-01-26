@@ -21,9 +21,9 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 }
 </style>
 	<script type="text/javascript">
-	var card_i=new Array("1c","1d","1h","1s","2c","2d","2h","2s","3h","3s","3c","3d","4h","4s","4c","4d","5h","5s","5c","5d","6h","6s","6c","6d","7h","7s","7c","7d");
+	var card_i=new Array("1h","1s","1c","1d","2h","2s","2c","2d","3h","3s","3c","3d","4h","4s","4c","4d","5h","5s","5c","5d","6h","6s","6c","6d","7h","7s","7c","7d","8h","8s","8c","8d","9h","9s","9c","9d","xh","xs","xc","xd","jh","js","jc","jd","qh","qs","qc","qd","kh","ks","kc","kd");
 	var card_c=new Array();
-	var nn=28;	//残りのカード枚数
+	var nn=52;	//残りのカード枚数
 	var oo=0;	//開いたカードの枚数
 	var c1=0;	//開いたカードの１枚めの番号
 	var i1=0;	//開いたカードの１枚めの画像番号
@@ -33,14 +33,14 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 
 	timerID=10;
 	function Shuffle(){
-		for (i=0;i<28;i++) {card_c[i]=card_i[i]+".svg";}	//全カードをコピー
-		for (i=27;i>0;i--){	//かき混ぜる
+		for (i=0;i<52;i++) {card_c[i]=card_i[i]+".svg";}	//全カードをコピー
+		for (i=51;i>0;i--){	//かき混ぜる
 		  j=Math.floor(Math.random()*i);
 		  temp=card_c[i];
 		  card_c[i]=card_c[j];
 		  card_c[j]=temp;
 		}
-		nn=28;	//残りのカード枚数
+		nn=52;	//残りのカード枚数
 		oo=0;	//開けたカード枚数
 		for (i=0;i<28;i++) document.images[i].src="ura.svg";	//全カードを裏で配置
 	}
@@ -69,7 +69,6 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 						console.log("1point:"+player1point);
 						nn=nn-2;
 						oo=0;
-						console.log("oo:"+oo);
 		    		}else{
 						playerCounter++;
 						timerID=setTimeout("UnMatch(i1,i2)",300);
@@ -79,7 +78,7 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 		  		}
 			}	
 		}else{
-			m=Math.floor(Math.random()*27);
+			m=Math.floor(Math.random()*51);
 			console.log(m);
 			if (oo==0){	//開けたカードが1枚目の時
 		  		i1=m;	//カード番号保存
@@ -157,17 +156,15 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 			<td><a href="javascript:Card(4)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(5)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(6)"><img src="ura.svg" border=0></a></td>
-		</tr>
-		<tr>
 			<td><a href="javascript:Card(7)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(8)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(9)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(10)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(11)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(12)"><img src="ura.svg" border=0></a></td>
-			<td><a href="javascript:Card(13)"><img src="ura.svg" border=0></a></td>
-			</tr>
+		</tr>
 		<tr>
+			<td><a href="javascript:Card(13)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(14)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(15)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(16)"><img src="ura.svg" border=0></a></td>
@@ -175,15 +172,41 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 			<td><a href="javascript:Card(18)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(19)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(20)"><img src="ura.svg" border=0></a></td>
-			</tr>
-		<tr>
 			<td><a href="javascript:Card(21)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(22)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(23)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(24)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(25)"><img src="ura.svg" border=0></a></td>
+		</tr>
+		<tr>	
 			<td><a href="javascript:Card(26)"><img src="ura.svg" border=0></a></td>
 			<td><a href="javascript:Card(27)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(28)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(29)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(30)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(31)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(32)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(33)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(34)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(35)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(36)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(37)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(38)"><img src="ura.svg" border=0></a></td>
+		</tr>
+		<tr>
+			<td><a href="javascript:Card(39)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(40)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(41)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(42)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(43)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(44)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(45)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(46)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(47)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(48)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(49)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(50)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(51)"><img src="ura.svg" border=0></a></td>
 		</tr>
 	</table>
 	
