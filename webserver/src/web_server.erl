@@ -1,7 +1,7 @@
 -module(web_server).
 -export([start/1]).
 
-start([Host | _]) ->
+start(Host) ->
 	inets:start(),
 	{ok, Pid} = inets:start(httpd, prop_list(Host) ),
 	Pid.

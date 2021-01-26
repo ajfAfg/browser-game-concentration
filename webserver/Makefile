@@ -1,21 +1,29 @@
-HOST := localhost
+EBIN := ${shell mkdir -p ebin ; echo ebin}
+ERLCFLAGS := -W -o $(EBIN)
+ERLC := erlc $(ERLCFLAGS)
 
-%.beam:%.erl
-	erlc -W $<
+PIPE_DIR := /tmp/
+LOG_DIR := ${shell mkdir -p log ; echo log}
+EBIN_PATH := ../webserver/$(EBIN)
+ERLD_FLAGS := $(PIPE_DIR) $(LOG_DIR)
+ERLD_FLAGS += "erl -run setup setup -pa $(EBIN_PATH)"
+ERLD := run_erl -daemon $(ERLD_FLAGS)
 
-MODS := ${shell find . -name '*.erl' | sed 's/.erl//'}
+MODS := ${shell find src -name '*.erl' | sed 's/.erl//'}
 
+%.beam: %.erl
+	$(ERLC) $<
 
-.PHONEY: all start stop compile ps clean
+.PHONY: all start stop compile ps clean
 
 # The commands all and start need to execute under root user
 all: compile start
 
 start:
-	cd ../game && sudo bash -c "erl -noshell -run web_server start $(HOST) -pa ../webserver/ &"
+	cd ../game && sudo $(ERLD)
 
 stop:
-	ps aux | grep erlang | grep web_server | grep -v grep | awk '{ print "kill -9", $$2 }' | sudo sh
+	ps aux | grep erlang | grep setup | grep -v grep | awk '{ print "kill -9", $$2 }' | sudo sh
 
 compile: ${MODS:%=%.beam}
 
@@ -23,4 +31,4 @@ ps:
 	ps aux | grep erlang | grep -v grep || echo 'no process'
 
 clean:
-	rm -rf *.beam *.dump *~ ../game/*.dump
+	rm -rf ebin/*.beam ../game/*.dump log/*
