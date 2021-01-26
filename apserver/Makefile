@@ -6,7 +6,7 @@ PIPE_DIR := /tmp/
 LOG_DIR := ${shell mkdir -p log ; echo log}
 EBIN_PATH := $(EBIN)
 ERLD_FLAGS := $(PIPE_DIR) $(LOG_DIR)
-ERLD_FLAGS += "erl -run setup setup -pa $(EBIN)"
+ERLD_FLAGS += "erl -run setup setup -pa $(EBIN_PATH)"
 ERLD := run_erl -daemon $(ERLD_FLAGS)
 
 MODS := ${shell find src -name '*.erl' | sed 's/.erl//'}
