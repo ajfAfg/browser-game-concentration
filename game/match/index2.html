@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<title>神経衰弱</title>
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store" />
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+h2{
+	font-size:30px;
+	padding-top:150px;
+	margin:0 auto;
+}
+table{margin:50px auto;}
+table td img{max-width:120px; height:auto; border-radius:5px;}
+@media screen and (max-width: 680px) {
+	table td img{width:100%; height:auto;}
+	h2{background-size:contain;}
+}
+</style>
+	<script type="text/javascript">
+	var card_i=new Array("1c","1d","1h","1s","2c","2d","2h","2s","3h","3s","3c","3d","4h","4s","4c","4d","5h","5s","5c","5d","6h","6s","6c","6d","7h","7s","7c","7d");
+	var card_c=new Array();
+	var nn=28;	//残りのカード枚数
+	var oo=0;	//開いたカードの枚数
+	var c1=0;	//開いたカードの１枚めの番号
+	var i1=0;	//開いたカードの１枚めの画像番号
+	let playerCounter=0;
+	let player1point=0;
+	let player2point=0;
+
+	timerID=10;
+	function Shuffle(){
+		for (i=0;i<28;i++) {card_c[i]=card_i[i]+".svg";}	//全カードをコピー
+		for (i=27;i>0;i--){	//かき混ぜる
+		  j=Math.floor(Math.random()*i);
+		  temp=card_c[i];
+		  card_c[i]=card_c[j];
+		  card_c[j]=temp;
+		}
+		nn=28;	//残りのカード枚数
+		oo=0;	//開けたカード枚数
+		for (i=0;i<28;i++) document.images[i].src="ura.svg";	//全カードを裏で配置
+	}
+
+	function Card(m){
+		if(playerCounter%2==0){
+			console.log(m);
+			if (oo==0){	//開けたカードが1枚目の時
+		  		i1=m;	//カード番号保存
+		  		c1=card_c[m].charAt(0);
+		  		if (c1!="n") {	//まだ取り終わっていないカードなら
+		    		oo=1;	//開けたカード枚数更新
+		    		document.images[m].src=card_c[m];	//カードを開ける
+		  		}		
+			}
+			else if (oo=1){	//開けたカードが2枚目の時
+		  		i2=m;	//カード番号保存
+		  		c2=card_c[m].charAt(0);
+		  		if (i1!=m && c2!="n"){	//一枚目と同じでなく取り終わっていないカードなら
+		    		document.images[m].src=card_c[m];	//カードを開ける
+		    		if (c1==c2) {
+		      			timerID=setTimeout("Match(i1,i2)",300);
+		      			card_c[i1]="n"; //一致したカードを取りきったことにする
+						card_c[i2]="n";
+						player1point=player1point+2;
+						console.log("1point:"+player1point);
+						nn=nn-2;
+						oo=0;
+						console.log("oo:"+oo);
+		    		}else{
+						playerCounter++;
+						timerID=setTimeout("UnMatch(i1,i2)",300);
+						oo=0;	//開けたカードの枚数を0に
+						console.log("pcount:"+playerCounter);
+					} 
+		  		}
+			}	
+		}else{
+			m=Math.floor(Math.random()*27);
+			console.log(m);
+			if (oo==0){	//開けたカードが1枚目の時
+		  		i1=m;	//カード番号保存
+		  		c1=card_c[m].charAt(0);
+		  		if (c1!="n") {	//まだ取り終わっていないカードなら
+		    		oo=1;	//開けたカード枚数更新
+		    		document.images[m].src=card_c[m];	//カードを開ける
+		 		}
+			}
+			else if (oo=1){	//開けたカードが2枚目の時
+		  		i2=m;	//カード番号保存
+		  		c2=card_c[m].charAt(0);
+		  		if (i1!=m && c2!="n"){	//一枚目と同じでなく取り終わっていないカードなら
+		    		document.images[m].src=card_c[m];	//カードを開ける
+		    		if (c1==c2) {
+		      			timerID=setTimeout("Match(i1,i2)",300);
+		      			card_c[i1]="n"; //一致したカードを取りきったことにする
+						card_c[i2]="n";
+						player2point=player2point+2;
+						  nn=nn-2;
+						  oo=0;
+		    		}else{
+						playerCounter++;
+						timerID=setTimeout("UnMatch(i1,i2)",300);
+						oo=0;	//開けたカードの枚数を0に
+						console.log("pcount:"+playerCounter);
+					} 
+		  		}
+			}
+		}
+		
+		
+	}
+
+	function Match(m1,m2){
+			if (nn==0){
+				var nxt = confirm("次のステージへ挑むのか？");
+				if (nxt == true){
+					location.href = "shinkei-suijaku2";
+					} else {
+					alert("そっか・・");
+					Shuffle();
+				}
+			}
+	}
+	function UnMatch(m1,m2){
+		    document.images[m1].src="ura.svg";	//カードを裏返す
+		    document.images[m2].src="ura.svg";	//カードを裏返す
+	}
+
+	</script>
+</head>
+
+<body onLoad="Shuffle()" style="font-size:15px;font-family:sans-serif;">
+
+	<div style="text-align:center;">
+		<h2>神　経　衰　弱</h2>
+		<p>相手のターンはあなたが適当なカードをクリックすることで進行します</p>
+		<form style="margin-top:30px;">
+		<input type="button" value="並べ直し" onClick="Shuffle()" style="cursor:pointer; border-radius:5px; width:200px; padding:10px 0;border:1px solid #777; font-size:15px;">
+		</form>
+		<p id="player"></p>
+    	<p id="player1_point"></p>
+    	<p id="player2_point"></p>
+	</div>
+		<table border="0" cellspacing="10">
+		<tr>
+			<td><a href="javascript:Card(0)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(1)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(2)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(3)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(4)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(5)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(6)"><img src="ura.svg" border=0></a></td>
+		</tr>
+		<tr>
+			<td><a href="javascript:Card(7)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(8)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(9)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(10)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(11)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(12)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(13)"><img src="ura.svg" border=0></a></td>
+			</tr>
+		<tr>
+			<td><a href="javascript:Card(14)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(15)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(16)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(17)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(18)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(19)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(20)"><img src="ura.svg" border=0></a></td>
+			</tr>
+		<tr>
+			<td><a href="javascript:Card(21)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(22)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(23)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(24)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(25)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(26)"><img src="ura.svg" border=0></a></td>
+			<td><a href="javascript:Card(27)"><img src="ura.svg" border=0></a></td>
+		</tr>
+	</table>
+	
+</body>
+</html>
