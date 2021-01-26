@@ -7,22 +7,16 @@ This repository implements the card game
 
 ## Quick start
 
-First, you can build and start a web server.
-And you need to enter your PC password at this time (This reason is described later).
+You can build and start a Web server and an AP server.
+Note that you need to enter your PC password at this time (This reason is described later).
 
 ~~~bash
-cd webserver
-make all
+$ pwd
+/path/to/browser-game-concentration
+$ make all
 ~~~
 
-Second, you can build and start an AP server.
-
-~~~bash
-cd apserver
-make all
-~~~
-
-Finally, open http://localhost in your browser, then let's play Concentration!
+And open http://localhost in your browser, then let's play Concentration!
 
 ## Notes
 

@@ -30,6 +30,18 @@ spade,11
 spade,5
 ~~~
 
+### Am I a first player ?
+
+You can access `localhost:8080/first_player` by a HTTP POST request,
+and specify a user ID and a matching ID for `user_id` and `matching_id` respectively.
+
+You will know whether are a first if successful.
+
+~~~bash
+$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/first_player
+true
+~~~
+
 ### Sharing a selected card
 
 You can access `localhost:8080/match` by a HTTP POST request,
@@ -37,17 +49,15 @@ and specify a user ID and a matching ID for `user_id` and `matching_id` respecti
 
 You will share a selected card among other players if successful.
 
-If you want to know a card selected another player, access as the code below.
-
 ~~~bash
-$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' localhost:8080/match
+$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' -d 'turn=1' localhost:8080/match
 1,2
 ~~~
 
 If you want to tell other players a selected card, access as the code below.
 
 ~~~bash
-$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' -d 'x=1' -d 'y=2' localhost:8080/match
+$ curl -X POST -d 'user_id=foo' -d 'matching_id=bar' -d 'turn=1' -d 'x=1' -d 'y=2' localhost:8080/match
 ok
 ~~~
 
