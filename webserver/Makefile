@@ -6,7 +6,7 @@ PIPE_DIR := /tmp/
 LOG_DIR := ${shell mkdir -p log ; echo log}
 EBIN_PATH := ../webserver/$(EBIN)
 ERLD_FLAGS := $(PIPE_DIR) $(LOG_DIR)
-ERLD_FLAGS += "erl -run setup setup -pa $(EBIN_PATH)"
+ERLD_FLAGS += "erl -run web_server start -pa $(EBIN_PATH)"
 ERLD := run_erl -daemon $(ERLD_FLAGS)
 
 MODS := ${shell find src -name '*.erl' | sed 's/.erl//'}
@@ -23,7 +23,7 @@ start:
 	cd ../game && sudo $(ERLD)
 
 stop:
-	ps aux | grep erlang | grep setup | grep -v grep | awk '{ print "kill -9", $$2 }' | sudo sh
+	ps aux | grep erlang | grep web_server | grep -v grep | awk '{ print "kill -9", $$2 }' | sudo sh
 
 compile: ${MODS:%=%.beam}
 

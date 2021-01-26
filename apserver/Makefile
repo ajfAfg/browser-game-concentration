@@ -6,7 +6,8 @@ PIPE_DIR := /tmp/
 LOG_DIR := ${shell mkdir -p log ; echo log}
 EBIN_PATH := $(EBIN)
 ERLD_FLAGS := $(PIPE_DIR) $(LOG_DIR)
-ERLD_FLAGS += "erl -run setup setup -pa $(EBIN_PATH)"
+#ERLD_FLAGS += "erl -run setup setup -pa $(EBIN_PATH)"
+ERLD_FLAGS += "erl -run ap_server start -pa $(EBIN_PATH)"
 ERLD := run_erl -daemon $(ERLD_FLAGS)
 
 MODS := ${shell find src -name '*.erl' | sed 's/.erl//'}
@@ -22,7 +23,7 @@ start:
 	$(ERLD)
 
 stop:
-	ps aux | grep erlang | grep setup | grep -v grep | awk '{ print "kill -9", $$2 }' | sh
+	ps aux | grep erlang | grep ap_server | grep -v grep | awk '{ print "kill -9", $$2 }' | sh
 
 compile: ${MODS:%=%.beam}
 
