@@ -1,6 +1,8 @@
-document.getElementById('js-state').textContent = 'Connecting...';
-
 (() => {
+    'use strict';
+
+    document.getElementById('js-state').textContent = 'Connecting...';
+
     const userId = sessionStorage.getItem('userId');
     if (userId === null) {
         window.location.href = '../';
