@@ -116,11 +116,14 @@ table td img{max-width:120px; height:auto; border-radius:5px;}
 
 	function Match(m1,m2){
 			if (nn==0){
-				var nxt = confirm("次のステージへ挑むのか？");
-				if (nxt == true){
-					location.href = "shinkei-suijaku2";
-					} else {
-					alert("そっか・・");
+				if(player1point>player2point){
+					var p1=confirm("プレイヤー1の勝利！")
+					Shuffle();
+				}else if(player1point<player2point){
+					var p2=confirm("プレイヤー2の勝利！")
+					Shuffle();
+				}else{
+					var p3=confirm("同点！")
 					Shuffle();
 				}
 			}
