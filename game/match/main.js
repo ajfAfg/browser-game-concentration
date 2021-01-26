@@ -91,11 +91,11 @@ window.onload=function(){
         }
         if(player1Point+player2Point>=52){
           if(player1Point>player2Point){
-            window.location.href = 'http://127.0.0.1:5500/kadai_winter/browser-game-concentration/game/match/win1.html';// 1の勝ち
+            window.location.href = './win1.html';// 1の勝ち
           }else if(player2Point>player1Point){
-            window.location.href = 'http://127.0.0.1:5500/kadai_winter/browser-game-concentration/game/match/win2.html';// 2の勝ち
+            window.location.href = './win2.html';// 2の勝ち
           }else{
-            window.location.href = 'http://127.0.0.1:5500/kadai_winter/browser-game-concentration/game/match/win12.html';// 同点
+            window.location.href = './win12.html';// 同点
           }
         }
       }else{
