@@ -15,15 +15,19 @@
         const data = {
             'user_id': userId
         };
-        $.post(url, data, callback);
-    
-        function callback(response) {
+        $.post(url, data)
+        .done(response => {
             if (response === 'false') {
                 window.location.href = '../';
             } else {
                 sessionStorage.setItem('matchingId', response);
                 window.location.href = '../match/';
             }
-        }
+        })
+        .fail(() => {
+            const element = document.getElementById('js-state');
+            element.textContent = 'Fatal Error';
+            element.style.color = 'red';
+        });
     }
 })();
