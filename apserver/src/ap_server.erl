@@ -5,8 +5,7 @@
 
 start() ->
 	inets:start(),
-    inets:start(httpd, prop_list() ),
-
+	inets:start(httpd, prop_list() ),
 	application:load(concentration),
 	application:start(concentration).
 
