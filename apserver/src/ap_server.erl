@@ -15,4 +15,4 @@ prop_list() ->
 	 {server_root, "."},
 	 {document_root, "."},
 	 {bind_address, ?HOST},
-	 {modules, [mod_alias, mod_auth, mod_esi, mod_actions, mod_head, mod_log, mod_disk_log, mod_room, mod_dealer, mod_match, mod_first_player]}].
+	 {modules, [mod_alias, mod_auth, mod_esi, mod_actions, mod_head, mod_log, mod_disk_log, mod_room, mod_deck, mod_match, mod_first_player]}].

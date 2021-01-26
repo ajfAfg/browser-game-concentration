@@ -1,10 +1,10 @@
--module(mod_dealer).
+-module(mod_deck).
 -export([do/1]).
 -include_lib("inets/include/httpd.hrl").
 -include_lib("src/server_config.hrl").
 
 do(ModData) ->
-	case ModData#mod.request_uri =:= "/dealer" andalso ModData#mod.method =:= "POST" of
+	case ModData#mod.request_uri =:= "/deck" andalso ModData#mod.method =:= "POST" of
 		true ->
 			handle(ModData);
 		false ->
