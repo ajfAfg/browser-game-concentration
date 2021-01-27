@@ -129,7 +129,7 @@ table td img{max-width:50px; height:auto; border-radius:5px;}
 						'user_id': userId,
 						'turn': turn,
 						'x': (m%13) + 1,
-						'y': Math.floor(m/13) + 1
+						'y': Math.floor(m/13)%4 + 1
 			        };
 					$.post(url, data)
 					.done(response => {
@@ -191,7 +191,7 @@ table td img{max-width:50px; height:auto; border-radius:5px;}
 					$.post(url, data)
 					.done(response => {
 						const move = response.split('\n').filter(i => i).map(i => i.split(',')).flat().map(i => Number(i));
-						const m = ((move[0]-1)%13) + ((move[1]%13)-1);
+						const m = ((move[0]*13)-1) + (((move[1]-1)*4)*13);
 						opponent(m);
 					});
 			    }
