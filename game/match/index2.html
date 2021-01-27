@@ -31,7 +31,77 @@ table td img{max-width:50px; height:auto; border-radius:5px;}
 	let player1point=0;
 	let player2point=0;
 
+<<<<<<< HEAD
 	timerID=10;
+=======
+	    async function connectRoomAsync(matchingId) {
+	        const url = location.protocol + '//' + location.hostname + ':8080/deck';
+	        const data = {
+				'matching_id': matchingId
+	        };
+			$.post(url, data)
+			.done(response => {
+				const csv = response.split('\n').filter(i => i).map(i => i.split(','));
+				const card_i = csv.map(i => i[1] + i[0].slice(0,1))
+					.map(i => i.replace('10', 'x').replace('11', 'j').replace('12', 'q').replace('13', 'k') );
+				
+				prepare(card_i);
+			});
+	    }
+	})();
+	
+	//
+	function prepare(card) {
+		// var card_i=new Array("1h","1s","1c","1d","2h","2s","2c","2d","3h","3s","3c","3d","4h","4s","4c","4d","5h","5s","5c","5d","6h","6s","6c","6d","7h","7s","7c","7d","8h","8s","8c","8d","9h","9s","9c","9d","xh","xs","xc","xd","jh","js","jc","jd","qh","qs","qc","qd","kh","ks","kc","kd");
+		card_i = card;
+		card_c = new Array;
+		for (i=0;i<card.length;i++) {card_c[i]=card_i[i]+".svg";}	//全カードをコピー
+		for (i=0;i<card.length;i++) document.images[i].src="ura.svg";	//全カードを裏で配置
+
+		nn=52;	//残りのカード枚数
+		oo=0;	//開いたカードの枚数
+		c1=0;	//開いたカードの１枚めの番号
+		i1=0;	//開いたカードの１枚めの画像番号
+
+		(() => {
+			const matchingId = sessionStorage.getItem('matchingId');
+			const userId = sessionStorage.getItem('userId');
+			if ((matchingId === null) || (userId === null)) {
+		        window.location.href = '../';
+		    } else {
+		        AmIFirstPlayerAsync(matchingId, userId);
+		    }
+
+		    async function AmIFirstPlayerAsync(matchingId, userId) {
+		        const url = location.protocol + '//' + location.hostname + ':8080/first_player';
+		        const data = {
+					'matching_id': matchingId,
+					'user_id': userId
+		        };
+				$.post(url, data)
+				.done(response => {
+					console.log(response);
+					console.log(typeof(response) );
+
+					if (response === 'true') {
+						playerCounter=0;
+					} else {
+						playerCounter=1;
+						Card(-1);
+					}
+				});
+		    }
+		})();
+		
+		player1point=0;
+		player2point=0;
+
+		turn = 1;
+		timerID=10;
+	}
+	
+	/*
+>>>>>>> develop
 	function Shuffle(){
 		for (i=0;i<52;i++) {card_c[i]=card_i[i]+".svg";}	//全カードをコピー
 		for (i=51;i>0;i--){	//かき混ぜる
@@ -47,6 +117,32 @@ table td img{max-width:50px; height:auto; border-radius:5px;}
 
 	function Card(m){
 		if(playerCounter%2==0){
+			(() => {
+				const matchingId = sessionStorage.getItem('matchingId');
+				const userId = sessionStorage.getItem('userId');
+				if ((matchingId === null) || (userId === null)) {
+			        window.location.href = '../';
+			    } else {
+			        tellMoveAsync(matchingId, userId);
+			    }
+			
+			    async function tellMoveAsync(matchingId, userId) {
+			        const url = location.protocol + '//' + location.hostname + ':8080/match';
+			        const data = {
+						'matching_id': matchingId,
+						'user_id': userId,
+						'turn': turn,
+						'x': (m%13) + 1,
+						'y': Math.floor(m/13) + 1
+			        };
+					$.post(url, data)
+					.done(response => {
+						const move = response.split('\n').filter(i => i).map(i => i.split(','));
+						console.log(move);
+					});
+			    }
+			})();
+
 			console.log(m);
 			if (oo==0){	//開けたカードが1枚目の時
 		  		i1=m;	//カード番号保存
@@ -73,45 +169,78 @@ table td img{max-width:50px; height:auto; border-radius:5px;}
 						oo=0;
 		    		}else{
 						playerCounter++;
+						turn++;
 						timerID=setTimeout("UnMatch(i1,i2)",300);
 						oo=0;	//開けたカードの枚数を0に
 						console.log("pcount:"+playerCounter);
+						Card(-1);
 					} 
 		  		}
 			}	
 		}else{
-			m=Math.floor(Math.random()*51);
-			console.log(m);
-			if (oo==0){	//開けたカードが1枚目の時
-		  		i1=m;	//カード番号保存
-		  		c1=card_c[m].charAt(0);
-		  		if (c1!="n") {	//まだ取り終わっていないカードなら
-		    		oo=1;	//開けたカード枚数更新
-		    		document.images[m].src=card_c[m];	//カードを開ける
-		 		}
+			(() => {
+				const matchingId = sessionStorage.getItem('matchingId');
+				const userId = sessionStorage.getItem('userId');
+				if ((matchingId === null) || (userId === null)) {
+			        window.location.href = '../';
+			    } else {
+			        knowMoveAsync(matchingId, userId);
+			    }
+			
+			    async function knowMoveAsync(matchingId, userId) {
+			        const url = location.protocol + '//' + location.hostname + ':8080/match';
+			        const data = {
+						'matching_id': matchingId,
+						'user_id': userId,
+						'turn': turn
+			        };
+					$.post(url, data)
+					.done(response => {
+						const move = response.split('\n').filter(i => i).map(i => i.split(',')).flat().map(i => Number(i));
+						const m = ((move[0]-1)%13) + ((move[1]%13)-1);
+						opponent(m);
+					});
+			    }
+			})();
+
+			function opponent(m) {
+				if (oo==0){	//開けたカードが1枚目の時
+					i1=m;	//カード番号保存
+					console.log(card_c[m]);
+					console.log(typeof(card_c[m]));
+			  		c1=card_c[m].charAt(0);
+			  		if (c1!="n") {	//まだ取り終わっていないカードなら
+			    		oo=1;	//開けたカード枚数更新
+						document.images[m].src=card_c[m];	//カードを開ける
+						Card(-1);
+			 		}
+				}
+				else if (oo=1){	//開けたカードが2枚目の時
+			  		i2=m;	//カード番号保存
+			  		c2=card_c[m].charAt(0);
+			  		if (i1!=m && c2!="n"){	//一枚目と同じでなく取り終わっていないカードなら
+			    		document.images[m].src=card_c[m];	//カードを開ける
+			    		if (c1==c2) {
+			      			timerID=setTimeout("Match(i1,i2)",300);
+			      			card_c[i1]="n"; //一致したカードを取りきったことにする
+							card_c[i2]="n";
+							player2point=player2point+2;
+							  nn=nn-2;
+							  oo=0;
+							  Card(-1);
+			    		}else{
+							playerCounter++;
+							turn++;
+							timerID=setTimeout("UnMatch(i1,i2)",300);
+							oo=0;	//開けたカードの枚数を0に
+							console.log("pcount:"+playerCounter);
+						} 
+			  		}
+				}
 			}
-			else if (oo=1){	//開けたカードが2枚目の時
-		  		i2=m;	//カード番号保存
-		  		c2=card_c[m].charAt(0);
-		  		if (i1!=m && c2!="n"){	//一枚目と同じでなく取り終わっていないカードなら
-		    		document.images[m].src=card_c[m];	//カードを開ける
-		    		if (c1==c2) {
-		      			timerID=setTimeout("Match(i1,i2)",300);
-		      			card_c[i1]="n"; //一致したカードを取りきったことにする
-						card_c[i2]="n";
-						player2point=player2point+2;
-						  nn=nn-2;
-						  oo=0;
-		    		}else{
-						playerCounter++;
-						timerID=setTimeout("UnMatch(i1,i2)",300);
-						oo=0;	//開けたカードの枚数を0に
-						console.log("pcount:"+playerCounter);
-					} 
-		  		}
-			}
+			// m=Math.floor(Math.random()*51);
+			// console.log(m);
 		}
-		
 		
 	}
 
@@ -141,7 +270,7 @@ table td img{max-width:50px; height:auto; border-radius:5px;}
 
 	<div style="text-align:center;">
 		<h2>神　経　衰　弱</h2>
-		<p>相手のターンはあなたが適当なカードをクリックすることで進行します</p>
+		<!-- <p>相手のターンはあなたが適当なカードをクリックすることで進行します</p> -->
 		<form style="margin-top:30px;">
 		<input type="button" value="リセット" onClick="Shuffle()" style="cursor:pointer; border-radius:5px; width:200px; padding:10px 0;border:1px solid #777; font-size:15px;">
 		</form>
